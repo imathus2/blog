@@ -1,0 +1,47 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+{% for post in posts %}
+
+	<div class="row">
+		<div class="col s12 m12">
+			<div class="card-panel white post-card">
+                <!-- Post title -->
+				<a href="/blog/{{ post.key().id() }}"><h4 class="post-title primary-text"> {{ post.title }}</h4></a>
+                <!-- Post creation date -->
+				<span class="grey-text text-darken-1">
+					<i class="tiny material-icons">date_range</i> {{ post.created.strftime("%b %d, %Y") }}
+				</span>
+                <!-- Post author -->
+				<span class="grey-text text-darken-1 left-margin-20">
+					<i class="tiny material-icons">account_box</i> {{ post.createdby }}
+				</span>
+				<br>
+                <!-- Post content -->
+				<p class="black-text post-paragraph">
+					{% for line in post.content.splitlines() %}
+    					{{line}}<br>
+					{% endfor %}
+				</p>
+                <!-- Comment button -->
+				<a class="waves-effect waves-light btn-flat" href="/blog/{{post.key().id()}}"><i class="material-icons left">comment</i>Comments</a>
+				{% if u.name == post.createdby %}
+                <!-- Edit Post button -->
+				<a class="waves-effect waves-light btn-flat" href="/edit/{{post.key().id()}}"><i class="material-icons left">create</i>Edit post</a>
+				{% else %}
+					{% if post.key().id() in likes %}
+                    <!-- Dislike button -->
+					<a class="waves-effect waves-light btn-flat" href="/dislike/{{post.key().id()}}"><i class="material-icons left">favorite</i>Like</a>
+					{% else %}
+                    <!-- Like button -->
+					<a class="waves-effect waves-light btn-flat" href="/like/{{post.key().id()}}"><i class="material-icons left">favorite_border</i>Like</a>
+					{% endif %}
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+{% endfor %}
+
+{% endblock %}

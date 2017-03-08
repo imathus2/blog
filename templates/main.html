@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Blog.</title>
+        <!--meta -->
+        <meta name="author" content="Athul Nair">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- stylesheets -->
+        <link rel="stylesheet" href="/static/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="/static/css/style.css">
+    </head>
+	<body class="primary-color">
+		<div id="content-wrapper" class="secondary-color z-depth-3">
+            <!--Navigation bar-->
+			<nav class="transparent z-depth-0">
+				<div class="nav-wrapper container">
+					<a href="/" class="brand-logo white-text">
+						<i class="large material-icons primary-text" style="font-size: 3rem;">forum</i>Blog<span class="primary-text">.</span>
+					</a>
+                    <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
+                    <!-- Large devices -->
+					<ul id="nav-mobile" class="right hide-on-med-and-down">
+						{% if u %}
+						<li>
+                            <a href="/blog/newpost"><i class="material-icons left">create</i>New Post</a>
+                        </li>
+						<li>
+                            <a href="#"><i class="material-icons left">account_circle</i>{{ u.name }}</a>
+                        </li>
+						<li>
+                            <a id="logout-btn" class="waves-effect waves-light btn primary-color secondary-text hover-secondary" href="/logout">Logout</a>
+                        </li>
+						{% else %}
+						<li>
+                            <a id="login-btn" class="waves-effect waves-light btn white secondary-text hover-primary" href="/login">Login</a>
+                        </li>
+						<li>
+                            <a id="signup-btn" class="waves-effect waves-light btn primary-color secondary-text hover-secondary" href="/signup">Signup</a>
+                        </li>
+						{% endif %}
+					</ul>
+                    <!-- Mobile side nav -->
+                    <ul class="side-nav" id="mobile-nav">
+                        {% if u %}
+						<li>
+                            <a href="/blog/newpost"><i class="material-icons left">create</i>New Post</a>
+                        </li>
+						<li>
+                            <a href="#"><i class="material-icons left">account_circle</i>{{ u.name }}</a>
+                        </li>
+						<li>
+                            <a href="/logout"><i class="material-icons">lock</i>Logout</a>
+                        </li>
+						{% else %}
+						<li>
+                            <a href="/login"><i class="material-icons">lock_open</i>Login</a>
+                        </li>
+						<li>
+                            <a href="/signup"><i class="material-icons">content_paste</i>Signup</a>
+                        </li>
+						{% endif %}
+                    </ul>
+                    
+				</div>
+			</nav>
+            
+            <!--Content-->
+            <div class="container content">
+            {% block content %}
+                
+            {% endblock %}
+            </div>
+
+ 		</div><!--End of content-wrapper-->
+        
+        <!-- Script -->
+ 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+ 		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+ 		<script src="/static/js/main.js"></script>
+        
+    </body>
+</html>

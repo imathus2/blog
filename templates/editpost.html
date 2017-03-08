@@ -1,0 +1,46 @@
+{% extends "main.html" %}
+
+{% block content %}
+	
+    <div class="white post-form">
+	{% if u.name == post.createdby %}
+        <!-- Cancel Editing -->
+		<a id="edit-btn" class="btn-floating btn-large waves-effect waves-light pink accent-3" href="/blog/{{post.key().id()}}">
+            <i class="material-icons">clear</i>
+        </a>
+		<h1 id="page-title">Edit Post</h1>
+		<form method="post">
+            <!--Title textbox -->
+			<div class="row input">
+				<div class="input-field col s12">
+					<input id="title" type="text" name="title" value="{{post.title}}" required>
+					<label for="title">Title</label>
+				</div>
+			</div>
+            <!-- Content textarea -->
+			<div class="row input">
+				<div class="input-field col s12">
+					<textarea id="post-content" class="materialize-textarea" name="content" required>{{ post.content }}</textarea>
+          			<label for="post-content">Content</label>
+				</div>
+			<p class="red-text">{{ error }}</p>
+			</div>
+			<div class="row">
+			<div class="col m6 s12">
+                <!-- Publish button -->
+				<div class="row input">
+					<div class="input-field col s12">
+						<input class="btn login-btn" type="submit" name="submit" value="Publish">
+					</div>
+				</div>
+			</div>
+			</div>
+		</form>
+	{% else %}
+        <!-- Error message -->
+		<p class="red-text center-align">You can only edit the post created by other users.</p>
+	{% endif %}
+	</div>
+
+
+{% endblock %}

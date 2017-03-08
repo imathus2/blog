@@ -1,0 +1,31 @@
+{% extends "main.html" %}
+
+{% block content %}
+	<div class="white post-form">
+		<h1 id="page-title">Login</h1>
+		<form method="post">
+            <!-- Username textbox -->
+			<div class="row input">
+				<div class="input-field col s12">
+					<input id="username" type="text" name="username" required>
+					<label for="username">Username</label>
+				</div>
+			</div>
+            <!-- Password textbox -->
+			<div class="row input">
+				<div class="input-field col s12">
+					<input id="password" type="password" name="password" required>
+					<label for="password">Password</label>
+				</div>
+			</div>
+            <!-- Login error message -->
+			<p class="red-text center-align">{{ error }}</p>
+            <!-- Login button -->
+			<div class="row input">
+				<div class="input-field col s12">
+					<input class="btn login-btn" type="submit" name="submit" value="LOGIN">
+				</div>
+			</div>
+		</form>
+	</div>
+{% endblock %}

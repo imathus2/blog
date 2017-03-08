@@ -1,0 +1,60 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+	<div class="white signup-form login-card">
+		<h1 id="page-title">Signup</h1>
+		<form method="post">
+		<div class="row">
+		<div class="col m6 s12">
+            <!-- Username textbox -->
+			<div class="row input">
+				<div class="input-field col s12">
+					<input id="username" type="text" name="username" value="{{username}}" required> 
+					<label for="username">Username<span class="red-text">*</span></label>
+					<p class="form-errors red-text">{{ error_username }}</p>
+				</div>
+			</div>
+            <!-- Eamil textbox -->
+			<div class="row input">
+				<div class="input-field col s12">
+					<input id="email" type="email" name="email" value="{{email}}">
+					<label for="email">Email</label>
+					<p class="form-errors red-text">{{ error_email }}</p>
+
+				</div>
+			</div>
+		</div>
+            
+		<div class="col m6 s12">
+            <!-- Password Textbox -->
+			<div class="row input">
+				<div class="input-field col s12">
+					<input id="password" type="password" name="password" required>
+					<label for="password">Password<span class="red-text">*</span></label>
+					<p class="form-errors red-text">{{ error_password }}</p>
+				</div>
+			</div>
+            <!-- Confirm Password textbox -->
+			<div class="row input">
+				<div class="input-field col s12">
+					<input id="confirm" type="password" name="confirm" required>
+					<label for="confirm">Confirm password<span class="red-text">*</span></label>
+					<p class="form-errors red-text">{{ error_confirm }}</p>
+				</div>
+			</div>
+            <!-- Signup button -->
+			<div class="row input">
+				<div class="input-field col s12">
+					<input class="btn login-btn" type="submit" name="submit" value="SIGNUP">
+				</div>
+			</div>
+			</div>
+			</div>
+		</form>
+	</div>
+
+
+	
+
+{% endblock %}

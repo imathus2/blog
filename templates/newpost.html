@@ -1,0 +1,37 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+	<div class="white post-form">
+		<h1 id="page-title">New Post</h1>
+		<form method="post">
+            <!-- Post title textbox -->
+			<div class="row input">
+				<div class="input-field col s12">
+					<input id="title" type="text" name="title" required>
+					<label for="title">Title</label>
+				</div>
+			</div>
+            <!-- Post content textarea -->
+			<div class="row input">
+				<div class="input-field col s12">
+					<textarea id="post-content" class="materialize-textarea" name="content" required></textarea>
+          			<label for="post-content">Write here....</label>
+				</div>
+                <!-- post publishing error -->
+                <p class="red-text">{{ error }}</p>
+			</div>
+			<div class="row">
+			<div class="col m6 s12">
+                <!-- Publish button -->
+				<div class="row input">
+					<div class="input-field col s12">
+						<input class="btn login-btn" type="submit" name="submit" value="Publish">
+					</div>
+				</div>
+			</div>
+			</div>
+		</form>
+	</div>
+
+{% endblock %}
