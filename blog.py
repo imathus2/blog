@@ -138,6 +138,7 @@ class Logout(Handler):
 
 
 class NewPost(Handler):
+    """New Post page handler"""
     def get(self):
         if self.u:
             self.render("newpost.html")
@@ -161,6 +162,7 @@ class NewPost(Handler):
 
 
 class PostPage(Handler):
+    """Post page handler"""
     def get(self, post_id):
         liked = False
         key = db.Key.from_path('Post', int(post_id))
@@ -193,6 +195,7 @@ class PostPage(Handler):
 
 
 class EditPost(Handler):
+    """Edit Post handler"""
     def get(self, post_id):
         key = db.Key.from_path('Post', int(post_id))
         post = db.get(key)
@@ -221,6 +224,7 @@ class EditPost(Handler):
 
 
 class DeletePost(Handler):
+    """Delete Post Handler"""
     def get(self, post_id):
         if self.u:
             key = db.Key.from_path('Post', int(post_id))
@@ -233,6 +237,7 @@ class DeletePost(Handler):
 
 
 class LikePost(Handler):
+    """Like Post handler"""
     def get(self, post_id):
         if self.u:
             key = db.Key.from_path('Post', int(post_id))
@@ -248,6 +253,7 @@ class LikePost(Handler):
 
 
 class Dislike(Handler):
+    """Dislike post handler"""
     def get(self, post_id):
         if self.u:
             key = db.Key.from_path('Post', int(post_id))
@@ -263,6 +269,7 @@ class Dislike(Handler):
 
 
 class DeleteComment(Handler):
+    """Delete a comment handler"""
     def get(self, post_id, comment_id):
         if self.u:
             key = db.Key.from_path('Comments', int(comment_id))
@@ -275,6 +282,7 @@ class DeleteComment(Handler):
 
 
 class EditComment(Handler):
+    """Edit a comment handler"""
     def get(self, post_id, comment_id):
         key = db.Key.from_path('Comments', int(comment_id))
         c = db.get(key)
