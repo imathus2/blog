@@ -2,7 +2,7 @@
 
 {% block content %}
 	
-    <div class="white post-box">
+    <div class="white post-box wow fadeInUp">
     {% if u.name == post.createdby %}
         <!-- Edit post button -->
    		<a id="edit-btn" class="btn-floating btn-large waves-effect waves-light pink accent-3 tooltipped" data-position="right" data-delay="50" data-tooltip="Edit Post" href="/edit/{{post.key().id()}}"><i class="material-icons">create</i></a>
@@ -43,10 +43,10 @@
     			{% for c in cmt %}
                 <li>
     				<div class="row">
-    					<div class="col m2 s3 valign-wrapper flex">
+    					<div class="col m2 s4 valign-wrapper flex">
                             <i class="material-icons medium center-align valign comment-icon">account_circle</i>
                         </div>
-    					<div class="flex" class="col m10 s9">
+    					<div class="flex" class="col m10 s8">
     						<p>
 	    						<b>{{ c.by }}</b><br>
 	    						{{ c.comment }}

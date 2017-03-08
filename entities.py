@@ -91,7 +91,7 @@ class Like(db.Model):
         for like in likes:
             likes_list.append(like.post)
         return likes_list
-    
+
     @classmethod
     def check_like(cls, uname, post):
         """Check if post is liked by user"""

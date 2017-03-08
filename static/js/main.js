@@ -1,5 +1,7 @@
 $(document).ready(function () {
     
+    new WOW().init();
+    
     //Initialize mobile side nav
     $(".button-collapse").sideNav();
     

@@ -9,6 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- stylesheets -->
         <link rel="stylesheet" href="/static/css/materialize.min.css">
+        <link rel="stylesheet" href="/static/css/animate.css">
         <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="/static/css/style.css">
@@ -18,12 +19,12 @@
             <!--Navigation bar-->
 			<nav class="transparent z-depth-0">
 				<div class="nav-wrapper container">
-					<a href="/" class="brand-logo white-text">
+					<a href="/" class="brand-logo white-text animated fadeInLeft">
 						<i class="large material-icons primary-text" style="font-size: 3rem;">forum</i>Blog<span class="primary-text">.</span>
 					</a>
                     <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
                     <!-- Large devices -->
-					<ul id="nav-mobile" class="right hide-on-med-and-down">
+					<ul id="nav-mobile" class="right hide-on-med-and-down animated fadeInRight">
 						{% if u %}
 						<li>
                             <a href="/blog/newpost"><i class="material-icons left">create</i>New Post</a>
@@ -80,6 +81,7 @@
         <!-- Script -->
  		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
  		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+        <script src="/static/js/wow.min.js"></script>
  		<script src="/static/js/main.js"></script>
         
     </body>
