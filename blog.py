@@ -262,6 +262,41 @@ class Dislike(Handler):
             self.redirect('/login')
 
 
+class DeleteComment(Handler):
+    def get(self, post_id, comment_id):
+        if self.u:
+            key = db.Key.from_path('Comments', int(comment_id))
+            c = db.get(key)
+            if c.by == self.u.name:
+                c.delete()
+                self.redirect('/blog/' + post_id)
+        else:
+            self.redirect('/login')
+
+
+class EditComment(Handler):
+    def get(self, post_id, comment_id):
+        key = db.Key.from_path('Comments', int(comment_id))
+        c = db.get(key)
+        if not c:
+            self.error(404)
+            return
+        self.render("editcomment.html", comment=c)
+
+    def post(self, post_id, comment_id):
+        if not self.u:
+            self.redirect('/login')
+        else:
+            comment = self.request.get("comment")
+
+            if comment:
+                key = db.Key.from_path('Comments', int(comment_id))
+                c = db.get(key)
+                c.comment = comment
+                c.put()
+                self.redirect('/blog/' + post_id)
+
+
 app = webapp2.WSGIApplication([('/', MainPage),
                                ('/signup', SignupPage),
                                ('/login', Login),
@@ -270,6 +305,8 @@ app = webapp2.WSGIApplication([('/', MainPage),
                                ('/blog/([0-9]+)', PostPage),
                                ('/edit/([0-9]+)', EditPost),
                                ('/delete/([0-9]+)', DeletePost),
+                               ('/delete/([0-9]+)/([0-9]+)', DeleteComment),
+                               ('/edit/([0-9]+)/([0-9]+)', EditComment),
                                ('/like/([0-9]+)', LikePost),
                                ('/dislike/([0-9]+)', Dislike)
                                ], debug=True)

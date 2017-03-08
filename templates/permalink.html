@@ -2,10 +2,12 @@
 
 {% block content %}
 	
-    <div class="white post-box wow fadeInUp">
+    <div class="white post-box wow fadeIn">
     {% if u.name == post.createdby %}
         <!-- Edit post button -->
-   		<a id="edit-btn" class="btn-floating btn-large waves-effect waves-light pink accent-3 tooltipped" data-position="right" data-delay="50" data-tooltip="Edit Post" href="/edit/{{post.key().id()}}"><i class="material-icons">create</i></a>
+   		<a id="edit-btn" class="btn-floating btn-large waves-effect waves-light pink accent-3" href="/edit/{{post.key().id()}}">
+            <i class="material-icons">create</i>
+        </a>
         <!-- Delete post button -->
    		<a id="delete-btn" class="btn-floating btn-large waves-effect waves-light pink accent-3 tooltipped" data-position="left" data-delay="50" data-tooltip="Delete Post" href="/delete/{{post.key().id()}}"><i class="material-icons">delete_forever</i></a>
     {% else %}
@@ -20,62 +22,76 @@
 
 		<h1 id="page-title">{{ post.title }}</h1>
    		
-    <div class="post-content">
-        <!-- Posted date -->
-    	<span class="grey-text text-darken-1">
-			<i class="tiny material-icons">date_range</i> {{ post.created.strftime("%b %d, %Y") }}
-		</span>
-        <!-- Post Author -->
-		<span class="grey-text text-darken-1 left-margin-20">
-			<i class="tiny material-icons">account_box</i> {{ post.createdby }}
-		</span>
-        <!-- Post Content --> 
-    	<p class="flow-text">
-    		{% for line in post.content.splitlines() %}
-    			{{line}}<br>
-			{% endfor %}
-    	</p>
-        <!-- Comments -->
-    	<div id="comment-box">
-    		<h5 class="center-align josefin">Comment</h5>
-    		<hr width="70px">
-    		<ul id="commentList">
-    			{% for c in cmt %}
-                <li>
-    				<div class="row">
-    					<div class="col m2 s4 valign-wrapper flex">
-                            <i class="material-icons medium center-align valign comment-icon">account_circle</i>
-                        </div>
-    					<div class="flex" class="col m10 s8">
-    						<p>
-	    						<b>{{ c.by }}</b><br>
-	    						{{ c.comment }}
-    						</p>
-    					</div>
-    				</div>
-    			</li>
-				{% endfor %}
-    		</ul>
-            <!-- View More comments button -->
-    		<p id="viewMoreWrapper" class="center-align">
-                <a id="viewMore" class="center-align primary-text">View more</a>
+        <div class="post-content">
+            <!-- Posted date -->
+            <span class="grey-text text-darken-1">
+                <i class="tiny material-icons">date_range</i> {{ post.created.strftime("%b %d, %Y") }}
+            </span>
+            <!-- Post Author -->
+            <span class="grey-text text-darken-1 left-margin-20">
+                <i class="tiny material-icons">account_box</i> {{ post.createdby }}
+            </span>
+            <!-- Post Content --> 
+            <p class="flow-text">
+                {% for line in post.content.splitlines() %}
+                    {{line}}<br>
+                {% endfor %}
             </p>
-    		<p id="noComments" class="center-align">No comments available.</p>
+            <!-- Comments -->
+            <div id="comment-box">
+                <h5 class="center-align josefin">Comment</h5>
+                <hr width="70px">
+                <ul id="commentList">
+                    {% for c in cmt %}
+                    <li>
+                        <div class="row">
+                            <div class="col m2 s4 valign-wrapper flex">
+                                <i class="material-icons medium center-align valign comment-icon">account_circle</i>
+                            </div>
+                            <div class="flex col m8 s8">
+                                <p style="margin-top:0px;">
+                                    <b>{{ c.by }}</b><br>
+                                    {{ c.comment }}
+                                </p>
+                            </div>
+                            {% if c.by == u.name %}
+                            <div class="col m2 hide-on-small-only">
+                                <a class="red-text" href="/delete/{{post.key().id()}}/{{c.key().id()}}">Delete</a>
+                                <br>
+                                <a class="blue-text" href="/edit/{{post.key().id()}}/{{c.key().id()}}">Edit</a>
+                            </div>
+                            <div class="col s8 offset-s4 hide-on-med-and-up">
+                                <div class="row">
+                                    <div class="col s6">
+                                        <a class="white-text red btn right" href="/delete/{{post.key().id()}}/{{c.key().id()}}">Delete</a>
+                                    </div>
+                                    <div class="col s6">
+                                        <a class="white-text blue btn left" href="/edit/{{post.key().id()}}/{{c.key().id()}}">Edit</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <!-- View More comments button -->
+                <p id="viewMoreWrapper" class="center-align">
+                    <a id="viewMore" class="center-align primary-text">View more</a>
+                </p>
+                <p id="noComments" class="center-align">No comments available.</p>
 
-    		<script type="text/javascript">
-    			console.log("{{ cmt }}")
-    		</script>
-    	</div>
-    	<div style="border-top: 1px solid #e0e0e0; padding-top: 20px;">
-    		<p class="josefin"><b>Leave a comment:</b></p>
-				<form method="post">
-                    <!-- Comment Textarea -->
-					<textarea class="comment-box" name="comment" required></textarea>
-                    <!-- Post comment button -->
-					<input class="btn primary-color hoverable comment-btn" type="submit" name="submit" value="Post Comment" style="margin-top: 1rem;">
-				</form>
-    	</div>
-	</div>	
+            </div>
+            <div class="comment-form">
+                <p class="josefin"><b>Leave a comment:</b></p>
+                    <form method="post">
+                        <!-- Comment Textarea -->
+                        <textarea class="comment-box" name="comment" required></textarea>
+                        <!-- Post comment button -->
+                        <input class="btn primary-color hoverable comment-btn" type="submit" name="submit" value="Post Comment" style="margin-top: 1rem;">
+                    </form>
+            </div>
+	   </div>	
 	</div>
 
 {% endblock %}

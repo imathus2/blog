@@ -1,0 +1,15 @@
+{% extends "main.html" %}
+
+{% block content %}
+	<div class="white post-form wow fadeIn">
+		<h1 id="page-title">Edit Comment</h1>
+		<form method="post">
+            <div class="input">
+                <!-- Comment Textarea -->
+                <textarea class="comment-box" name="comment" required>{{comment.comment}}</textarea>
+                <!-- Post comment button -->
+                <input class="btn primary-color hoverable comment-btn" type="submit" name="submit" value="Post Comment" style="margin-top: 1rem;">
+            </div>
+        </form>
+	</div>
+{% endblock %}
