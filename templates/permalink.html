@@ -3,7 +3,7 @@
 {% block content %}
 	
     <div class="white post-box wow fadeIn">
-    {% if u.name == post.createdby %}
+    {% if user.name == post.createdby %}
         <!-- Edit post button -->
    		<a id="edit-btn" class="btn-floating btn-large waves-effect waves-light pink accent-3" href="/edit/{{post.key().id()}}">
             <i class="material-icons">create</i>
@@ -54,7 +54,7 @@
                                     {{ c.comment }}
                                 </p>
                             </div>
-                            {% if c.by == u.name %}
+                            {% if c.by == user.name %}
                             <div class="col m2 hide-on-small-only">
                                 <a class="red-text" href="/delete/{{post.key().id()}}/{{c.key().id()}}">Delete</a>
                                 <br>

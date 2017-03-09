@@ -26,7 +26,7 @@ class Handler(webapp2.RequestHandler):
         return t.render(params)
 
     def render(self, template, **kw):
-        kw['u'] = self.u
+        kw['user'] = self.user
         self.write(self.render_str(template, **kw))
 
     def set_secure_cookie(self, name, val):
@@ -47,7 +47,7 @@ class Handler(webapp2.RequestHandler):
     def initialize(self, *a, **kw):
         webapp2.RequestHandler.initialize(self, *a, **kw)
         uid = self.read_secure_cookie('user_id')
-        self.u = uid and User.by_id(int(uid))
+        self.user = uid and User.by_id(int(uid))
 
 
 class MainPage(Handler):
@@ -56,8 +56,8 @@ class MainPage(Handler):
     def get(self):
         """Renders the home page"""
         like_list = []
-        if self.u:
-            like_list = Like.list_of_likes(self.u.name)
+        if self.user:
+            like_list = Like.list_of_likes(self.user.name)
         posts = Post.all().order('-created')
         self.render("home.html", posts=posts, likes=like_list)
 
@@ -87,7 +87,7 @@ class SignupPage(Handler):
             errors = True
         # Validate Password
         if not validate_password(self.password):
-            params['error_password'] = "Password is valid"
+            params['error_password'] = "Password is Invalid"
             errors = True
         # Compare Password
         if self.password != self.confirm:
@@ -140,20 +140,21 @@ class Logout(Handler):
 class NewPost(Handler):
     """New Post page handler"""
     def get(self):
-        if self.u:
+        if self.user:
             self.render("newpost.html")
         else:
             self.redirect("/login")
 
     def post(self):
-        if not self.u:
+        if not self.user:
             self.redirect('/login')
         else:
             title = self.request.get('title')
             content = self.request.get('content')
 
             if title and content:
-                p = Post(title=title, content=content, createdby=self.u.name)
+                p = Post(title=title, content=content,
+                         createdby=self.user.name)
                 p.put()
                 self.redirect('/blog/%s' % str(p.key().id()))
             else:
@@ -172,25 +173,26 @@ class PostPage(Handler):
             return
         cmt = Comments.all().order('-created')
         cmt.filter("post =", int(post_id))
-        if self.u:
-            liked = Like.check_like(uname=self.u.name, post=int(post_id))
+        if self.user:
+            liked = Like.check_like(uname=self.user.name, post=int(post_id))
         self.render("permalink.html", post=post, cmt=cmt, liked=liked)
 
     def post(self, post_id):
-        if not self.u:
+        if not self.user:
             self.redirect('/login')
         else:
             liked = False
             comment = self.request.get("comment")
             if comment:
-                c = Comments(comment=comment, by=self.u.name,
+                c = Comments(comment=comment, by=self.user.name,
                              post=int(post_id))
                 c.put()
                 key = db.Key.from_path('Post', int(post_id))
                 post = db.get(key)
                 cmt = Comments.all().order('-created')
                 cmt.filter("post =", int(post_id))
-                liked = Like.check_like(uname=self.u.name, post=int(post_id))
+                liked = Like.check_like(uname=self.user.name,
+                                        post=int(post_id))
                 self.render("permalink.html", post=post, cmt=cmt, liked=liked)
 
 
@@ -205,7 +207,7 @@ class EditPost(Handler):
         self.render("editpost.html", post=post)
 
     def post(self, post_id):
-        if not self.u:
+        if not self.user:
             self.redirect('/login')
         else:
             title = self.request.get('title')
@@ -214,10 +216,14 @@ class EditPost(Handler):
             if title and content:
                 key = db.Key.from_path('Post', int(post_id))
                 p = db.get(key)
-                p.title = title
-                p.content = content
-                p.put()
-                self.redirect('/blog/%s' % str(p.key().id()))
+                if p.createdby == self.user.name:
+                    p.title = title
+                    p.content = content
+                    p.put()
+                    self.redirect('/blog/%s' % str(p.key().id()))
+                else:
+                    msg = "You can only edit post created by yourself"
+                    self.render("editpost.html", error=msg)
             else:
                 msg = "Please provide title and content."
                 self.render("editpost.html", error=msg)
@@ -226,10 +232,10 @@ class EditPost(Handler):
 class DeletePost(Handler):
     """Delete Post Handler"""
     def get(self, post_id):
-        if self.u:
+        if self.user:
             key = db.Key.from_path('Post', int(post_id))
             p = db.get(key)
-            if p.createdby == self.u.name:
+            if p.createdby == self.user.name:
                 p.delete()
             self.redirect('/')
         else:
@@ -239,13 +245,14 @@ class DeletePost(Handler):
 class LikePost(Handler):
     """Like Post handler"""
     def get(self, post_id):
-        if self.u:
+        if self.user:
             key = db.Key.from_path('Post', int(post_id))
             p = db.get(key)
-            if not p.createdby == self.u.name:
-                liked = Like.check_like(uname=self.u.name, post=int(post_id))
+            if not p.createdby == self.user.name:
+                liked = Like.check_like(uname=self.user.name,
+                                        post=int(post_id))
                 if not liked:
-                    like = Like(user=self.u.name, post=int(post_id))
+                    like = Like(user=self.user.name, post=int(post_id))
                     like.put()
                     self.redirect('/blog/' + post_id)
         else:
@@ -255,12 +262,13 @@ class LikePost(Handler):
 class Dislike(Handler):
     """Dislike post handler"""
     def get(self, post_id):
-        if self.u:
+        if self.user:
             key = db.Key.from_path('Post', int(post_id))
             p = db.get(key)
-            if not p.createdby == self.u.name:
+            if not p.createdby == self.user.name:
                 l = Like.all()
-                l.filter("user =", self.u.name).filter("post =", int(post_id))
+                l.filter("user =", self.user.name).filter("post =",
+                                                          int(post_id))
                 for like in l:
                     like.delete()
             self.redirect('/blog/' + post_id)
@@ -271,10 +279,10 @@ class Dislike(Handler):
 class DeleteComment(Handler):
     """Delete a comment handler"""
     def get(self, post_id, comment_id):
-        if self.u:
+        if self.user:
             key = db.Key.from_path('Comments', int(comment_id))
             c = db.get(key)
-            if c.by == self.u.name:
+            if c.by == self.user.name:
                 c.delete()
                 self.redirect('/blog/' + post_id)
         else:
@@ -292,7 +300,7 @@ class EditComment(Handler):
         self.render("editcomment.html", comment=c)
 
     def post(self, post_id, comment_id):
-        if not self.u:
+        if not self.user:
             self.redirect('/login')
         else:
             comment = self.request.get("comment")
@@ -300,9 +308,13 @@ class EditComment(Handler):
             if comment:
                 key = db.Key.from_path('Comments', int(comment_id))
                 c = db.get(key)
-                c.comment = comment
-                c.put()
-                self.redirect('/blog/' + post_id)
+                if c.by == self.user.name:
+                    c.comment = comment
+                    c.put()
+                    self.redirect('/blog/' + post_id)
+                else:
+                    msg = "You can only edit comments posted by yourself."
+                    self.render("editcomment.html", error=msg, comment=c)
 
 
 app = webapp2.WSGIApplication([('/', MainPage),

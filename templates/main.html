@@ -25,12 +25,12 @@
                     <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
                     <!-- Large devices -->
 					<ul id="nav-mobile" class="right hide-on-med-and-down animated fadeInRight">
-						{% if u %}
+						{% if user %}
 						<li>
                             <a href="/blog/newpost"><i class="material-icons left">create</i>New Post</a>
                         </li>
 						<li>
-                            <a href="#"><i class="material-icons left">account_circle</i>{{ u.name }}</a>
+                            <a href="#"><i class="material-icons left">account_circle</i>{{ user.name }}</a>
                         </li>
 						<li>
                             <a id="logout-btn" class="waves-effect waves-light btn primary-color secondary-text hover-secondary" href="/logout">Logout</a>
@@ -51,7 +51,7 @@
                             <a href="/blog/newpost"><i class="material-icons left">create</i>New Post</a>
                         </li>
 						<li>
-                            <a href="#"><i class="material-icons left">account_circle</i>{{ u.name }}</a>
+                            <a href="#"><i class="material-icons left">account_circle</i>{{ user.name }}</a>
                         </li>
 						<li>
                             <a href="/logout"><i class="material-icons">lock</i>Logout</a>

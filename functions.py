@@ -5,24 +5,21 @@ import hmac
 from string import letters
 
 
-# Regular expressions
-USERNAME_RE = re.compile(r"^[a-zA-Z0-9_-]{5,15}$")
-PASSWORD_RE = re.compile(r"^.{5,15}$")
-EMAIL_RE = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
-
-
 # Validates username
 def validate_username(username):
+    USERNAME_RE = re.compile(r"^[a-zA-Z0-9_-]{5,15}$")
     return username and USERNAME_RE.match(username)
 
 
 # Validates password
 def validate_password(password):
+    PASSWORD_RE = re.compile(r"^.{5,15}$")
     return password and PASSWORD_RE.match(password)
 
 
 # Validates email
 def validate_email(email):
+    EMAIL_RE = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
     return not email or EMAIL_RE.match(email)
 
 
